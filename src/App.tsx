@@ -5,6 +5,8 @@ import {
   TrendingUp, Truck, Smartphone, Check, Menu, X,
   Instagram, Facebook, MessageCircle
 } from 'lucide-react';
+import { useLanguage } from '@/i18n/LanguageContext';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
 // ============ ANIMATION WRAPPER ============
 function FadeIn({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
@@ -25,6 +27,7 @@ function FadeIn({ children, delay = 0, className = '' }: { children: React.React
 
 // ============ APP STORE BUTTONS ============
 function AppStoreButtons({ size = 'lg', className = '' }: { size?: 'sm' | 'lg'; className?: string }) {
+  const { t } = useLanguage();
   const h = size === 'lg' ? 'h-14' : 'h-10';
   const iconSize = size === 'lg' ? 28 : 20;
   return (
@@ -38,9 +41,9 @@ function AppStoreButtons({ size = 'lg', className = '' }: { size?: 'sm' | 'lg'; 
         <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="white">
           <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.92.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
         </svg>
-        <div className="text-left">
-          <div className={`text-white/60 ${size === 'lg' ? 'text-[10px]' : 'text-[8px]'}`}>Download on the</div>
-          <div className={`text-white font-semibold ${size === 'lg' ? 'text-sm' : 'text-xs'}`}>App Store</div>
+        <div className="text-start">
+          <div className={`text-white/60 ${size === 'lg' ? 'text-[10px]' : 'text-[8px]'}`}>{t.appStore.downloadOn}</div>
+          <div className={`text-white font-semibold ${size === 'lg' ? 'text-sm' : 'text-xs'}`}>{t.appStore.appStore}</div>
         </div>
       </a>
       <a
@@ -52,9 +55,9 @@ function AppStoreButtons({ size = 'lg', className = '' }: { size?: 'sm' | 'lg'; 
         <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="white">
           <path d="M3 20.5v-17c0-.71.73-1.17 1.34-.83l15 8.5c.6.34.6 1.18 0 1.52l-15 8.5c-.61.34-1.34-.12-1.34-.83z" />
         </svg>
-        <div className="text-left">
-          <div className={`text-white/60 ${size === 'lg' ? 'text-[10px]' : 'text-[8px]'}`}>Get it on</div>
-          <div className={`text-white font-semibold ${size === 'lg' ? 'text-sm' : 'text-xs'}`}>Google Play</div>
+        <div className="text-start">
+          <div className={`text-white/60 ${size === 'lg' ? 'text-[10px]' : 'text-[8px]'}`}>{t.appStore.getItOn}</div>
+          <div className={`text-white font-semibold ${size === 'lg' ? 'text-sm' : 'text-xs'}`}>{t.appStore.googlePlay}</div>
         </div>
       </a>
     </div>
@@ -63,6 +66,7 @@ function AppStoreButtons({ size = 'lg', className = '' }: { size?: 'sm' | 'lg'; 
 
 // ============ MAIN PAGE ============
 export default function LandingPage() {
+  const { t, isRtl } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
@@ -87,17 +91,21 @@ export default function LandingPage() {
           </a>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-sm font-medium text-[#666] hover:text-[#1A1A1A] transition-colors">Features</a>
-            <a href="#how-it-works" className="text-sm font-medium text-[#666] hover:text-[#1A1A1A] transition-colors">How It Works</a>
-            <a href="#reviews" className="text-sm font-medium text-[#666] hover:text-[#1A1A1A] transition-colors">Reviews</a>
+          <nav className="hidden md:flex items-center gap-6">
+            <a href="#features" className="text-sm font-medium text-[#666] hover:text-[#1A1A1A] transition-colors">{t.nav.features}</a>
+            <a href="#how-it-works" className="text-sm font-medium text-[#666] hover:text-[#1A1A1A] transition-colors">{t.nav.howItWorks}</a>
+            <a href="#reviews" className="text-sm font-medium text-[#666] hover:text-[#1A1A1A] transition-colors">{t.nav.reviews}</a>
+            <LanguageSwitcher />
             <AppStoreButtons size="sm" />
           </nav>
 
-          {/* Mobile Menu Button */}
-          <button className="md:hidden w-10 h-10 flex items-center justify-center" onClick={() => setShowMobileMenu(!showMobileMenu)}>
-            {showMobileMenu ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* Mobile: language + menu */}
+          <div className="md:hidden flex items-center gap-2">
+            <LanguageSwitcher />
+            <button className="w-10 h-10 flex items-center justify-center" onClick={() => setShowMobileMenu(!showMobileMenu)}>
+              {showMobileMenu ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
@@ -110,11 +118,11 @@ export default function LandingPage() {
               className="md:hidden bg-white border-t border-[#F0F0F0] overflow-hidden"
             >
               <div className="px-4 py-6 space-y-4">
-                <a href="#features" onClick={() => setShowMobileMenu(false)} className="block text-base font-medium py-2">Features</a>
-                <a href="#how-it-works" onClick={() => setShowMobileMenu(false)} className="block text-base font-medium py-2">How It Works</a>
-                <a href="#reviews" onClick={() => setShowMobileMenu(false)} className="block text-base font-medium py-2">Reviews</a>
+                <a href="#features" onClick={() => setShowMobileMenu(false)} className="block text-base font-medium py-2">{t.nav.features}</a>
+                <a href="#how-it-works" onClick={() => setShowMobileMenu(false)} className="block text-base font-medium py-2">{t.nav.howItWorks}</a>
+                <a href="#reviews" onClick={() => setShowMobileMenu(false)} className="block text-base font-medium py-2">{t.nav.reviews}</a>
                 <div className="pt-4 border-t border-[#F0F0F0]">
-                  <p className="text-sm text-[#999] mb-3">Download the app</p>
+                  <p className="text-sm text-[#999] mb-3">{t.nav.downloadApp}</p>
                   <AppStoreButtons size="sm" />
                 </div>
               </div>
@@ -133,7 +141,7 @@ export default function LandingPage() {
         <div className="relative max-w-7xl mx-auto px-4 md:px-6">
           <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
             {/* Left: Copy */}
-            <div className="text-center md:text-left">
+            <div className="text-center md:text-start">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -141,7 +149,7 @@ export default function LandingPage() {
               >
                 <span className="inline-flex items-center gap-2 bg-[#FFEBEE] text-[#E53935] text-sm font-semibold px-4 py-1.5 rounded-full mb-6">
                   <Zap size={14} />
-                  Groceries delivered in 30-60 minutes
+                  {t.hero.badge}
                 </span>
               </motion.div>
 
@@ -151,18 +159,18 @@ export default function LandingPage() {
                 transition={{ duration: 0.6, delay: 0.1 }}
                 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.1] tracking-tight"
               >
-                Your Groceries.
+                {t.hero.title1}
                 <br />
-                <span className="text-[#E53935]">Delivered Fast.</span>
+                <span className="text-[#E53935]">{t.hero.title2}</span>
               </motion.h1>
 
               <motion.p
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-lg md:text-xl text-[#666] mt-5 max-w-lg mx-auto md:mx-0 leading-relaxed"
+                className="text-lg md:text-xl text-[#666] mt-5 max-w-lg mx-auto md:mx-0 md:ms-0 leading-relaxed"
               >
-                Order fresh produce, daily essentials, and household items from your favorite stores in Cairo. Fast delivery, fair prices.
+                {t.hero.subtitle}
               </motion.p>
 
               <motion.div
@@ -184,13 +192,13 @@ export default function LandingPage() {
                 <div className="flex items-center gap-1.5">
                   <Star size={16} className="text-[#FB8C00] fill-[#FB8C00]" />
                   <span className="font-semibold text-[#1A1A1A]">4.9</span>
-                  <span>App Rating</span>
+                  <span>{t.hero.appRating}</span>
                 </div>
                 <div className="w-px h-4 bg-[#E8E8E8]" />
                 <div className="flex items-center gap-1.5">
                   <TrendingUp size={16} className="text-[#2E7D32]" />
                   <span className="font-semibold text-[#1A1A1A]">50K+</span>
-                  <span>Downloads</span>
+                  <span>{t.hero.downloads}</span>
                 </div>
                 <div className="w-px h-4 bg-[#E8E8E8]" />
                 <div className="hidden sm:flex items-center gap-1.5">
@@ -202,7 +210,7 @@ export default function LandingPage() {
 
             {/* Right: Phone Mockup */}
             <motion.div
-              initial={{ opacity: 0, x: 60, scale: 0.95 }}
+              initial={{ opacity: 0, x: isRtl ? -60 : 60, scale: 0.95 }}
               animate={{ opacity: 1, x: 0, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
               className="relative flex justify-center"
@@ -217,14 +225,14 @@ export default function LandingPage() {
                 <motion.div
                   animate={{ y: [0, -8, 0] }}
                   transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                  className="absolute -left-4 md:-left-8 top-1/4 bg-white rounded-2xl shadow-lg p-3 flex items-center gap-2"
+                  className="absolute -start-4 md:-start-8 top-1/4 bg-white rounded-2xl shadow-lg p-3 flex items-center gap-2"
                 >
                   <div className="w-10 h-10 bg-[#E8F5E9] rounded-full flex items-center justify-center">
                     <Truck size={18} className="text-[#2E7D32]" />
                   </div>
                   <div>
-                    <p className="text-xs font-semibold">On the way!</p>
-                    <p className="text-[10px] text-[#999]">8 mins</p>
+                    <p className="text-xs font-semibold">{t.hero.onTheWay}</p>
+                    <p className="text-[10px] text-[#999]">{t.hero.mins}</p>
                   </div>
                 </motion.div>
 
@@ -232,14 +240,14 @@ export default function LandingPage() {
                 <motion.div
                   animate={{ y: [0, 8, 0] }}
                   transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-                  className="absolute -right-2 md:-right-6 top-1/3 bg-white rounded-2xl shadow-lg p-3"
+                  className="absolute -end-2 md:-end-6 top-1/3 bg-white rounded-2xl shadow-lg p-3"
                 >
                   <div className="flex items-center gap-1">
                     {[1, 2, 3, 4, 5].map(i => (
                       <Star key={i} size={12} className="text-[#FB8C00] fill-[#FB8C00]" />
                     ))}
                   </div>
-                  <p className="text-[10px] text-[#999] mt-1">12,847 reviews</p>
+                  <p className="text-[10px] text-[#999] mt-1">{t.hero.reviewsCount}</p>
                 </motion.div>
               </div>
             </motion.div>
@@ -252,10 +260,10 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-5">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
             {[
-              { icon: Zap, label: '30-60 Min Delivery', sub: 'Lightning fast' },
-              { icon: Leaf, label: 'Farm Fresh Daily', sub: 'Quality guaranteed' },
-              { icon: Wallet, label: 'Cash on Delivery', sub: 'Pay when you get it' },
-              { icon: Shield, label: 'Easy Returns', sub: 'No questions asked' },
+              { icon: Zap, ...t.trust.delivery },
+              { icon: Leaf, ...t.trust.fresh },
+              { icon: Wallet, ...t.trust.cod },
+              { icon: Shield, ...t.trust.returns },
             ].map((item, i) => (
               <FadeIn key={item.label} delay={i * 0.1}>
                 <div className="flex items-center gap-3">
@@ -277,31 +285,16 @@ export default function LandingPage() {
       <section id="how-it-works" className="py-16 md:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <FadeIn className="text-center mb-12 md:mb-16">
-            <span className="text-[#E53935] text-sm font-semibold uppercase tracking-wider">Simple & Fast</span>
-            <h2 className="text-3xl md:text-4xl font-extrabold mt-3">How It Works</h2>
-            <p className="text-[#666] mt-3 max-w-md mx-auto">Get your groceries delivered in three easy steps</p>
+            <span className="text-[#E53935] text-sm font-semibold uppercase tracking-wider">{t.howItWorks.badge}</span>
+            <h2 className="text-3xl md:text-4xl font-extrabold mt-3">{t.howItWorks.title}</h2>
+            <p className="text-[#666] mt-3 max-w-md mx-auto">{t.howItWorks.subtitle}</p>
           </FadeIn>
 
           <div className="grid md:grid-cols-3 gap-8 md:gap-12">
             {[
-              {
-                num: '01',
-                title: 'Browse & Shop',
-                desc: 'Explore thousands of products from your favorite local stores. Fresh produce, snacks, household essentials, and more.',
-                img: '/images/step-browse.jpg',
-              },
-              {
-                num: '02',
-                title: 'Add to Cart',
-                desc: 'Add items to your cart with one tap. Enjoy exclusive app-only deals, bundle offers, and personalized recommendations.',
-                img: '/images/step-cart.jpg',
-              },
-              {
-                num: '03',
-                title: 'Fast Delivery',
-                desc: 'Sit back and relax. Your order arrives at your doorstep in 30-60 minutes. Track your delivery in real-time.',
-                img: '/images/step-deliver.jpg',
-              },
+              { num: '01', img: '/images/step-browse.jpg', ...t.howItWorks.steps[0] },
+              { num: '02', img: '/images/step-cart.jpg', ...t.howItWorks.steps[1] },
+              { num: '03', img: '/images/step-deliver.jpg', ...t.howItWorks.steps[2] },
             ].map((step, i) => (
               <FadeIn key={step.num} delay={i * 0.15}>
                 <div className="text-center group">
@@ -311,7 +304,7 @@ export default function LandingPage() {
                       alt={step.title}
                       className="w-full h-full object-cover rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.08)] group-hover:shadow-[0_12px_40px_rgba(0,0,0,0.12)] transition-shadow duration-300"
                     />
-                    <div className="absolute -top-3 -right-3 w-10 h-10 bg-[#E53935] rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                    <div className="absolute -top-3 -end-3 w-10 h-10 bg-[#E53935] rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
                       {step.num}
                     </div>
                   </div>
@@ -337,13 +330,13 @@ export default function LandingPage() {
                   className="rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] w-full"
                 />
                 {/* Overlay stat card */}
-                <div className="absolute -bottom-6 -right-4 md:right-6 bg-white rounded-2xl shadow-xl p-4 flex items-center gap-3">
+                <div className="absolute -bottom-6 -end-4 md:end-6 bg-white rounded-2xl shadow-xl p-4 flex items-center gap-3">
                   <div className="w-12 h-12 bg-[#E8F5E9] rounded-full flex items-center justify-center">
                     <Check size={20} className="text-[#2E7D32]" />
                   </div>
                   <div>
                     <p className="text-lg font-bold">4.9/5</p>
-                    <p className="text-xs text-[#999]">Customer rating</p>
+                    <p className="text-xs text-[#999]">{t.features.customerRating}</p>
                   </div>
                 </div>
               </div>
@@ -352,36 +345,20 @@ export default function LandingPage() {
             {/* Right: Features List */}
             <div>
               <FadeIn>
-                <span className="text-[#E53935] text-sm font-semibold uppercase tracking-wider">Why Choose StoreX</span>
+                <span className="text-[#E53935] text-sm font-semibold uppercase tracking-wider">{t.features.badge}</span>
                 <h2 className="text-3xl md:text-4xl font-extrabold mt-3 leading-tight">
-                  Everything You Need,
+                  {t.features.title1}
                   <br />
-                  <span className="text-[#E53935]">Delivered Fresh.</span>
+                  <span className="text-[#E53935]">{t.features.title2}</span>
                 </h2>
               </FadeIn>
 
               <div className="mt-8 space-y-6">
                 {[
-                  {
-                    icon: Clock,
-                    title: '30-60 Minute Delivery',
-                    desc: 'From checkout to your door. Real-time tracking so you know exactly when your groceries arrive.',
-                  },
-                  {
-                    icon: Leaf,
-                    title: 'Freshness Guaranteed',
-                    desc: 'We source daily from local markets and farms. If it is not fresh, we will replace it for free.',
-                  },
-                  {
-                    icon: BadgePercent,
-                    title: 'Exclusive App Deals',
-                    desc: 'Unlock special discounts, bundle savings, and flash sales available only on the StoreX app.',
-                  },
-                  {
-                    icon: Smartphone,
-                    title: 'Easy Reordering',
-                    desc: 'Reorder your weekly essentials in one tap. Save favorites and build shopping lists effortlessly.',
-                  },
+                  { icon: Clock, ...t.features.items[0] },
+                  { icon: Leaf, ...t.features.items[1] },
+                  { icon: BadgePercent, ...t.features.items[2] },
+                  { icon: Smartphone, ...t.features.items[3] },
                 ].map((feat, i) => (
                   <FadeIn key={feat.title} delay={0.1 + i * 0.1}>
                     <div className="flex items-start gap-4 group">
@@ -412,10 +389,10 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
-              { value: '50K+', label: 'App Downloads' },
-              { value: '4.9', label: 'App Store Rating' },
-              { value: '30min', label: 'Avg. Delivery Time' },
-              { value: '10K+', label: 'Products Available' },
+              { value: '50K+', label: t.stats.downloads },
+              { value: '4.9', label: t.stats.rating },
+              { value: '30min', label: t.stats.deliveryTime },
+              { value: '10K+', label: t.stats.products },
             ].map((stat, i) => (
               <FadeIn key={stat.label} delay={i * 0.1}>
                 <div>
@@ -432,39 +409,20 @@ export default function LandingPage() {
       <section id="reviews" className="py-16 md:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <FadeIn className="text-center mb-12">
-            <span className="text-[#E53935] text-sm font-semibold uppercase tracking-wider">Loved by Customers</span>
-            <h2 className="text-3xl md:text-4xl font-extrabold mt-3">What People Say</h2>
+            <span className="text-[#E53935] text-sm font-semibold uppercase tracking-wider">{t.reviews.badge}</span>
+            <h2 className="text-3xl md:text-4xl font-extrabold mt-3">{t.reviews.title}</h2>
           </FadeIn>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                name: 'Ahmed H.',
-                location: 'Heliopolis, Cairo',
-                text: 'I use StoreX every week for my family groceries. The app is super fast and the delivery always arrives within 40 minutes. The Cash on Delivery option is perfect for me.',
-                rating: 5,
-              },
-              {
-                name: 'Mariam K.',
-                location: 'Nasr City, Cairo',
-                text: 'The freshest vegetables I have ever ordered online. Everything is carefully packed and the delivery riders are always polite. The reorder feature saves me so much time!',
-                rating: 5,
-              },
-              {
-                name: 'Omar S.',
-                location: 'Maadi, Cairo',
-                text: 'StoreX has become my go-to for everything from water bottles to baby diapers. The app deals are amazing and I love the real-time tracking. Highly recommended!',
-                rating: 5,
-              },
-            ].map((review, i) => (
+            {t.reviews.items.map((review, i) => (
               <FadeIn key={review.name} delay={i * 0.1}>
                 <div className="bg-[#FAFAFA] rounded-2xl p-6 h-full flex flex-col hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-shadow duration-300">
                   <div className="flex items-center gap-1 mb-3">
-                    {[...Array(review.rating)].map((_, j) => (
+                    {[...Array(5)].map((_, j) => (
                       <Star key={j} size={14} className="text-[#FB8C00] fill-[#FB8C00]" />
                     ))}
                   </div>
-                  <p className="text-[#444] text-sm leading-relaxed flex-1">"{review.text}"</p>
+                  <p className="text-[#444] text-sm leading-relaxed flex-1">&ldquo;{review.text}&rdquo;</p>
                   <div className="mt-4 pt-4 border-t border-[#F0F0F0] flex items-center gap-3">
                     <div className="w-10 h-10 bg-[#FFEBEE] rounded-full flex items-center justify-center">
                       <span className="text-[#E53935] font-bold text-sm">{review.name[0]}</span>
@@ -488,16 +446,16 @@ export default function LandingPage() {
           alt="StoreX delivery"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
+        <div className={`absolute inset-0 ${isRtl ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-black/60 via-black/30 to-transparent`} />
         <div className="absolute inset-0 flex items-center">
           <div className="max-w-7xl mx-auto px-4 md:px-6 w-full">
             <FadeIn>
               <h2 className="text-3xl md:text-5xl font-extrabold text-white leading-tight max-w-lg">
-                Fast Delivery
+                {t.delivery.title1}
                 <br />
-                Across Cairo
+                {t.delivery.title2}
               </h2>
-              <p className="text-white/80 mt-3 max-w-md">From Heliopolis to Maadi, Nasr City to 6th of October. We have got Cairo covered.</p>
+              <p className="text-white/80 mt-3 max-w-md">{t.delivery.subtitle}</p>
             </FadeIn>
           </div>
         </div>
@@ -508,12 +466,12 @@ export default function LandingPage() {
         <div className="max-w-3xl mx-auto px-4 md:px-6 text-center">
           <FadeIn>
             <h2 className="text-3xl md:text-5xl font-extrabold leading-tight">
-              Get Your Groceries
+              {t.cta.title1}
               <br />
-              <span className="text-[#E53935]">in 30 Minutes</span>
+              <span className="text-[#E53935]">{t.cta.title2}</span>
             </h2>
             <p className="text-[#666] mt-4 text-lg max-w-lg mx-auto">
-              Download the StoreX app now and get your first delivery free. Thousands of products, one simple app.
+              {t.cta.subtitle}
             </p>
           </FadeIn>
 
@@ -524,18 +482,18 @@ export default function LandingPage() {
           </FadeIn>
 
           <FadeIn delay={0.3}>
-            <div className="mt-6 flex items-center justify-center gap-6 text-sm text-[#666]">
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-6 text-sm text-[#666]">
               <span className="flex items-center gap-1.5">
                 <Check size={14} className="text-[#2E7D32]" />
-                Free first delivery
+                {t.cta.freeDelivery}
               </span>
               <span className="flex items-center gap-1.5">
                 <Check size={14} className="text-[#2E7D32]" />
-                No credit card needed
+                {t.cta.noCard}
               </span>
               <span className="flex items-center gap-1.5">
                 <Check size={14} className="text-[#2E7D32]" />
-                Cancel anytime
+                {t.cta.cancelAnytime}
               </span>
             </div>
           </FadeIn>
@@ -548,9 +506,9 @@ export default function LandingPage() {
                   <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" />
                 </svg>
               </div>
-              <div className="text-left">
-                <p className="font-semibold text-sm">Scan to download</p>
-                <p className="text-xs text-[#999]">Point your camera at the code</p>
+              <div className="text-start">
+                <p className="font-semibold text-sm">{t.cta.scanTitle}</p>
+                <p className="text-xs text-[#999]">{t.cta.scanSubtitle}</p>
               </div>
             </div>
           </FadeIn>
@@ -567,30 +525,30 @@ export default function LandingPage() {
                 <span className="font-bold text-lg">StoreX</span>
               </div>
               <p className="text-white/50 text-sm leading-relaxed">
-                Cairo's favorite grocery delivery app. Fresh products, fast delivery, fair prices.
+                {t.footer.tagline}
               </p>
             </div>
 
             <div>
-              <h4 className="font-semibold mb-3">Quick Links</h4>
+              <h4 className="font-semibold mb-3">{t.footer.quickLinks}</h4>
               <div className="space-y-2">
-                {['About Us', 'Careers', 'Blog', 'Press'].map(link => (
+                {[t.footer.aboutUs, t.footer.careers, t.footer.blog, t.footer.press].map(link => (
                   <a key={link} href="#" className="block text-white/50 text-sm hover:text-white transition-colors">{link}</a>
                 ))}
               </div>
             </div>
 
             <div>
-              <h4 className="font-semibold mb-3">Support</h4>
+              <h4 className="font-semibold mb-3">{t.footer.support}</h4>
               <div className="space-y-2">
-                {['Help Center', 'Delivery Areas', 'Return Policy', 'Terms of Service'].map(link => (
+                {[t.footer.helpCenter, t.footer.deliveryAreas, t.footer.returnPolicy, t.footer.termsOfService].map(link => (
                   <a key={link} href="#" className="block text-white/50 text-sm hover:text-white transition-colors">{link}</a>
                 ))}
               </div>
             </div>
 
             <div>
-              <h4 className="font-semibold mb-3">Download</h4>
+              <h4 className="font-semibold mb-3">{t.footer.download}</h4>
               <AppStoreButtons size="sm" />
               <div className="flex items-center gap-3 mt-4">
                 <a href="#" className="w-9 h-9 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors">
@@ -607,10 +565,10 @@ export default function LandingPage() {
           </div>
 
           <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-white/30 text-xs">© 2026 StoreX Grocery. Cairo, Egypt. All rights reserved.</p>
+            <p className="text-white/30 text-xs">{t.footer.copyright}</p>
             <div className="flex items-center gap-4 text-xs text-white/30">
-              <a href="#" className="hover:text-white/60 transition-colors">Privacy Policy</a>
-              <a href="#" className="hover:text-white/60 transition-colors">Terms of Service</a>
+              <a href="#" className="hover:text-white/60 transition-colors">{t.footer.privacyPolicy}</a>
+              <a href="#" className="hover:text-white/60 transition-colors">{t.footer.termsOfService}</a>
             </div>
           </div>
         </div>
@@ -621,7 +579,7 @@ export default function LandingPage() {
         href="https://wa.me/201000695651"
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-[0_4px_16px_rgba(37,211,102,0.4)] hover:scale-110 transition-transform"
+        className="fixed bottom-6 end-6 z-50 w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-[0_4px_16px_rgba(37,211,102,0.4)] hover:scale-110 transition-transform"
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{ delay: 1.5, type: 'spring', stiffness: 200 }}

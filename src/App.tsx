@@ -123,7 +123,7 @@ export default function LandingPage() {
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 md:h-20 flex items-center justify-between">
           <a href="#" className="flex items-center gap-2">
-            <img src="/images/image_logo_new.png" alt="StoreX" className="h-16 md:h-16 w-auto" />
+            <img src="/images/image_logo_new.png" alt="StoreX" className="h-14 md:h-14 w-auto" />
           </a>
 
           {/* Desktop Nav */}
@@ -586,7 +586,7 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-4 gap-8 mb-10">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <img src="/images/image_logo_new.png" alt="StoreX" className="w-[80%] max-sm:w-[50%]" />
+                <img src="/images/image_logo_new.png" alt="StoreX" className="w-[50%] max-sm:w-[50%]" />
                 {/* <span className="font-bold text-lg">StoreX</span> */}
               </div>
               <p className="text-white/50 text-sm leading-relaxed">

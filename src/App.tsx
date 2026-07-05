@@ -87,7 +87,7 @@ export default function LandingPage() {
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 md:h-20 flex items-center justify-between">
           <a href="#" className="flex items-center gap-2">
-            <img src="/images/storex-logo.png" alt="StoreX" className="h-8 md:h-10 w-auto" />
+            <img src="/images/image_logo_new.png" alt="StoreX" className="h-8 md:h-10 w-auto" />
           </a>
 
           {/* Desktop Nav */}
@@ -217,12 +217,12 @@ export default function LandingPage() {
             >
               <div className="relative">
                 <img
-                  src="/images/phone-mockup.jpg"
+                  src="/images/phone-mockup.png"
                   alt="StoreX App"
-                  className="w-[280px] md:w-[340px] lg:w-[380px] rounded-[40px] shadow-[0_40px_80px_-20px_rgba(0,0,0,0.2)]"
+                  className=""
                 />
                 {/* Floating badge */}
-                <motion.div
+                {/* <motion.div
                   animate={{ y: [0, -8, 0] }}
                   transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
                   className="absolute -start-4 md:-start-8 top-1/4 bg-white rounded-2xl shadow-lg p-3 flex items-center gap-2"
@@ -234,10 +234,10 @@ export default function LandingPage() {
                     <p className="text-xs font-semibold">{t.hero.onTheWay}</p>
                     <p className="text-[10px] text-[#999]">{t.hero.mins}</p>
                   </div>
-                </motion.div>
+                </motion.div> */}
 
                 {/* Rating badge */}
-                <motion.div
+                {/* <motion.div
                   animate={{ y: [0, 8, 0] }}
                   transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
                   className="absolute -end-2 md:-end-6 top-1/3 bg-white rounded-2xl shadow-lg p-3"
@@ -248,7 +248,7 @@ export default function LandingPage() {
                     ))}
                   </div>
                   <p className="text-[10px] text-[#999] mt-1">{t.hero.reviewsCount}</p>
-                </motion.div>
+                </motion.div> */}
               </div>
             </motion.div>
           </div>
@@ -521,8 +521,8 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-4 gap-8 mb-10">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <img src="/images/storex-logo.png" alt="StoreX" className="h-8 w-auto" />
-                <span className="font-bold text-lg">StoreX</span>
+                <img src="/images/image_logo_new.png" alt="StoreX" className="w-[50%]" />
+                {/* <span className="font-bold text-lg">StoreX</span> */}
               </div>
               <p className="text-white/50 text-sm leading-relaxed">
                 {t.footer.tagline}

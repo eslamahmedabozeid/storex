@@ -123,7 +123,7 @@ export default function LandingPage() {
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 md:h-20 flex items-center justify-between">
           <a href="#" className="flex items-center gap-2">
-            <img src="/images/image_logo_new.png" alt="StoreX" className="h-14 md:h-14 w-auto" />
+            <img src="/images/image_logo_new.png" alt="StoreX" className="h-12 md:h-12 w-auto" />
           </a>
 
           {/* Desktop Nav */}

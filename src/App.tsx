@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import {
   Zap, Leaf, Wallet, Shield, Star, Clock, MapPin,
-  TrendingUp, Truck, Smartphone, Check, Menu, X,
+  TrendingUp, Smartphone, Check, Menu, X,
   Instagram, Facebook, MessageCircle
 } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';

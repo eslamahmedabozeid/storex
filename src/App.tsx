@@ -70,12 +70,48 @@ export default function LandingPage() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
+  const pendingScrollRef = useRef<string | null>(null);
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = showMobileMenu ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [showMobileMenu]);
+
+  const performScroll = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (!element) return;
+    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const scrollToSection = (sectionId: string, fromMobileMenu = false) => {
+    if (fromMobileMenu) {
+      pendingScrollRef.current = sectionId;
+      setShowMobileMenu(false);
+      return;
+    }
+    performScroll(sectionId);
+  };
+
+  const handleMobileMenuExit = () => {
+    if (!pendingScrollRef.current) return;
+    const sectionId = pendingScrollRef.current;
+    pendingScrollRef.current = null;
+    requestAnimationFrame(() => performScroll(sectionId));
+  };
+
+  const navLinks = [
+    { id: 'features', label: t.nav.features },
+    { id: 'how-it-works', label: t.nav.howItWorks },
+    { id: 'reviews', label: t.nav.reviews },
+  ] as const;
 
   return (
     <div className="min-h-screen bg-white text-[#1A1A1A] font-sans antialiased">
@@ -87,14 +123,24 @@ export default function LandingPage() {
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 md:h-20 flex items-center justify-between">
           <a href="#" className="flex items-center gap-2">
-            <img src="/images/image_logo_new.png" alt="StoreX" className="h-8 md:h-10 w-auto" />
+            <img src="/images/image_logo_new.png" alt="StoreX" className="h-16 md:h-16 w-auto" />
           </a>
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-6">
-            <a href="#features" className="text-sm font-medium text-[#666] hover:text-[#1A1A1A] transition-colors">{t.nav.features}</a>
-            <a href="#how-it-works" className="text-sm font-medium text-[#666] hover:text-[#1A1A1A] transition-colors">{t.nav.howItWorks}</a>
-            <a href="#reviews" className="text-sm font-medium text-[#666] hover:text-[#1A1A1A] transition-colors">{t.nav.reviews}</a>
+            {navLinks.map(({ id, label }) => (
+              <a
+                key={id}
+                href={`#${id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToSection(id);
+                }}
+                className="text-sm font-medium text-[#666] hover:text-[#1A1A1A] transition-colors"
+              >
+                {label}
+              </a>
+            ))}
             <LanguageSwitcher />
             <AppStoreButtons size="sm" />
           </nav>
@@ -109,24 +155,43 @@ export default function LandingPage() {
         </div>
 
         {/* Mobile Menu */}
-        <AnimatePresence>
+        <AnimatePresence onExitComplete={handleMobileMenuExit}>
           {showMobileMenu && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-white border-t border-[#F0F0F0] overflow-hidden"
-            >
-              <div className="px-4 py-6 space-y-4">
-                <a href="#features" onClick={() => setShowMobileMenu(false)} className="block text-base font-medium py-2">{t.nav.features}</a>
-                <a href="#how-it-works" onClick={() => setShowMobileMenu(false)} className="block text-base font-medium py-2">{t.nav.howItWorks}</a>
-                <a href="#reviews" onClick={() => setShowMobileMenu(false)} className="block text-base font-medium py-2">{t.nav.reviews}</a>
-                <div className="pt-4 border-t border-[#F0F0F0]">
-                  <p className="text-sm text-[#999] mb-3">{t.nav.downloadApp}</p>
-                  <AppStoreButtons size="sm" />
+            <>
+              <motion.button
+                type="button"
+                aria-label="Close menu"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 top-16 z-40 md:hidden bg-black/20"
+                onClick={() => setShowMobileMenu(false)}
+              />
+              <motion.div
+                initial={{ opacity: 0, y: -12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.2 }}
+                className="fixed left-0 right-0 top-16 z-50 md:hidden bg-white border-t border-[#F0F0F0] shadow-lg max-h-[calc(100vh-4rem)] overflow-y-auto"
+              >
+                <div className="px-4 py-6 space-y-4">
+                  {navLinks.map(({ id, label }) => (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => scrollToSection(id, true)}
+                      className="block w-full text-start text-base font-medium py-2"
+                    >
+                      {label}
+                    </button>
+                  ))}
+                  <div className="pt-4 border-t border-[#F0F0F0]">
+                    <p className="text-sm text-[#999] mb-3">{t.nav.downloadApp}</p>
+                    <AppStoreButtons size="sm" />
+                  </div>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </>
           )}
         </AnimatePresence>
       </header>
@@ -217,9 +282,9 @@ export default function LandingPage() {
             >
               <div className="relative">
                 <img
-                  src="/images/phone-mockup.png"
+                  src="/images/image_hero.jpeg"
                   alt="StoreX App"
-                  className=""
+                  className="w-[280px] md:w-[340px] lg:w-[300px] rounded-[40px] shadow-[0_40px_80px_-20px_rgba(0,0,0,0.2)]"
                 />
                 {/* Floating badge */}
                 {/* <motion.div
@@ -282,7 +347,7 @@ export default function LandingPage() {
       </section>
 
       {/* ========== HOW IT WORKS ========== */}
-      <section id="how-it-works" className="py-16 md:py-24 bg-white">
+      <section id="how-it-works" className="scroll-mt-16 md:scroll-mt-20 py-16 md:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <FadeIn className="text-center mb-12 md:mb-16">
             <span className="text-[#E53935] text-sm font-semibold uppercase tracking-wider">{t.howItWorks.badge}</span>
@@ -318,7 +383,7 @@ export default function LandingPage() {
       </section>
 
       {/* ========== FEATURES ========== */}
-      <section id="features" className="py-16 md:py-24 bg-[#FAFAFA]">
+      <section id="features" className="scroll-mt-16 md:scroll-mt-20 py-16 md:py-24 bg-[#FAFAFA]">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
             {/* Left: Image */}
@@ -406,7 +471,7 @@ export default function LandingPage() {
       </section>
 
       {/* ========== TESTIMONIALS ========== */}
-      <section id="reviews" className="py-16 md:py-24 bg-white">
+      <section id="reviews" className="scroll-mt-16 md:scroll-mt-20 py-16 md:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <FadeIn className="text-center mb-12">
             <span className="text-[#E53935] text-sm font-semibold uppercase tracking-wider">{t.reviews.badge}</span>
@@ -521,7 +586,7 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-4 gap-8 mb-10">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <img src="/images/image_logo_new.png" alt="StoreX" className="w-[50%]" />
+                <img src="/images/image_logo_new.png" alt="StoreX" className="w-[80%] max-sm:w-[50%]" />
                 {/* <span className="font-bold text-lg">StoreX</span> */}
               </div>
               <p className="text-white/50 text-sm leading-relaxed">
